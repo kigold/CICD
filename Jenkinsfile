@@ -5,16 +5,23 @@ pipeline{
             steps{
                 echo "========executing One========"
             }
+            post{
+                always{
+                    echo "========always========"
+                }
+                success{
+                    echo "========A executed successfully========"
+                }
+                failure{
+                    echo "========A execution failed========"
+                }
+            }
         }
-    }
-    stages{
         stage("Two"){
             steps{
                 input('Do you want to proceed?')
             }
         }
-    }
-    stages{
         stage("Three"){
             when{
                 not {
@@ -25,8 +32,6 @@ pipeline{
                     echo "Hello"
             }
         }
-    }
-    stages{
         stage("Four"){
             parallel {
                 stage("Unit Test"){
@@ -46,6 +51,17 @@ pipeline{
                     }
                 }                
             }
+        }
+    }
+    post{
+        always{
+            echo "========always========"
+        }
+        success{
+            echo "========pipeline executed successfully ========"
+        }
+        failure{
+            echo "========pipeline execution failed========"
         }
     }
 }
