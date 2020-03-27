@@ -49,7 +49,7 @@ pipeline{
                     steps{
                             echo "Building Docker Image"
                             sh """
-                                dockker build -t ${IMAGE} .
+                                docker build -t ${IMAGE} .
                                 docker tag ${IMAGE} ${IMAGE}:${VERSION}
                             """
                     }
