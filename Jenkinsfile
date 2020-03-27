@@ -1,7 +1,8 @@
 pipeline{
     environment{
-        IMAGE = "TestAppImg"
+        IMAGE = "testing_app_img"
         VERSION = "001"
+        APP = "test_app"
     }
     agent any
     stages{
@@ -10,11 +11,11 @@ pipeline{
                 echo "========executing One========"
             }
         }
-        stage("Two"){
+        /*stage("Two"){
             steps{
                 input('Do you want to proceed?')
             }
-        }
+        }*/
         stage("Three"){
             when{
                 not {
@@ -54,9 +55,26 @@ pipeline{
                             """
                     }
                 } 
+        stage("Clean"){
+                steps{
+                        echo "Remove old Docker Container"
+                        /*sh """
+                        docker stop ${APP}
+                        docker rm ${APP}
+                        """*/
+                        //make it fail safe
+                        sh """
+                        docker ps -f name=${APP} -q | xargs --no-run-if-empty docker stop
+                        docker ps -a -f name=${APP} -q | xargs -r docker rm
+                        """
+                }
+            }  
         stage("Deploy"){
                     steps{
                             echo "Deploying Docker Container"
+                            sh """
+                            docker run -p 8765:80 --name ${APP} ${IMAGE}
+                            """
                     }
                 }  
     }
