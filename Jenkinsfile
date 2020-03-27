@@ -1,4 +1,8 @@
 pipeline{
+    environment{
+        IMAGE = "TestAppImg"
+        VERSION = "001"
+    }
     agent any
     stages{
         stage("One"){
@@ -50,7 +54,7 @@ pipeline{
                             """
                     }
                 } 
-        stage("Build"){
+        stage("Deploy"){
                     steps{
                             echo "Deploying Docker Container"
                     }
