@@ -5,17 +5,6 @@ pipeline{
             steps{
                 echo "========executing One========"
             }
-            post{
-                always{
-                    echo "========always========"
-                }
-                success{
-                    echo "========A executed successfully========"
-                }
-                failure{
-                    echo "========A execution failed========"
-                }
-            }
         }
         stage("Two"){
             steps{
@@ -52,16 +41,23 @@ pipeline{
                 }                
             }
         }
-    }
-    post{
-        always{
-            echo "========always========"
+        stage("Five"){
+            stage("Build"){
+                    steps{
+                            echo "Building Docker Image"
+                            sh """
+                                dockker build -t ${IMAGE} .
+                                docker tag ${IMAGE} ${IMAGE}:${VERSION}
+                            """
+                    }
+                }  
         }
-        success{
-            echo "========pipeline executed successfully ========"
-        }
-        failure{
-            echo "========pipeline execution failed========"
+        stage("Six"){
+            stage("Build"){
+                    steps{
+                            echo "Deploying Docker Container"
+                    }
+                }  
         }
     }
 }
