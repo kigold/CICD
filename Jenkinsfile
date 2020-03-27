@@ -41,8 +41,7 @@ pipeline{
                 }                
             }
         }
-        stage("Five"){
-            stage("Build"){
+        stage("Build"){
                     steps{
                             echo "Building Docker Image"
                             sh """
@@ -50,14 +49,11 @@ pipeline{
                                 docker tag ${IMAGE} ${IMAGE}:${VERSION}
                             """
                     }
-                }  
-        }
-        stage("Six"){
-            stage("Build"){
+                } 
+        stage("Build"){
                     steps{
                             echo "Deploying Docker Container"
                     }
                 }  
-        }
     }
 }
